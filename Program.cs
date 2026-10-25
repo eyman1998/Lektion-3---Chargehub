@@ -5,24 +5,23 @@ class Program
 {
     static void Main(string[] args)
     {
+        // 1. Skapa objekten (Bil 1, AC-01 och DC-01)
+        var bil1 = new Vehicle(1, 75);
         var ac1 = new AcStation("AC-01");
-        var ac2 = new AcStation("AC-02");
         var dc1 = new DcStation("DC-01");
 
-        // Skapar listan med dagens laddningar
-        var sessions = new List<(ChargingStation Station, decimal Kwh)>
+        // 2. Samla dem i en gemensam lista av typen IReportable
+        var reportables = new List<IReportable>
         {
-            (ac1, 20m), (dc1, 20m), (ac2, 12m), (dc1, 40m)
+            bil1,
+            ac1,
+            dc1
         };
 
-        decimal totalRevenue = 0;
-
-        // Loopar igenom listan och lägger ihop priserna
-        foreach (var session in sessions)
+        // 3. Loopa igenom och anropa interfacet
+        foreach (var item in reportables)
         {
-            totalRevenue += session.Station.CalculatePrice(session.Kwh);
+            Console.WriteLine(item.GetReport());
         }
-
-        Console.WriteLine($"Dagens totala intäkter: {totalRevenue} kr");
     }
 }
